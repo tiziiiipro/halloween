@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leyendas Argentinas · Mitos del monte y la noche</title>
+<!-- Tipografías terroríficas de Google Fonts (si no cargan, se usa la de respaldo) -->
+<link href="https://fonts.googleapis.com/css2?family=Creepster&family=Special+Elite&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<canvas id="cielo" aria-hidden="true"></canvas>
+<div class="luna" aria-hidden="true"></div>
+<div class="niebla" aria-hidden="true"></div>
+<!-- Siluetas de lápidas y casa embrujada dibujadas con SVG -->
+<svg class="cementerio" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 120V95h60v-18q8-14 16 0v18h40V60h30l15-20 15 20h30v35h50V90q10-18 20 0v30zM400 120V85q12-22 24 0v35zM600 120V75h50V50l30-25 30 25v25h40v45zM820 120V88q10-20 20 0v32zM900 120V80h90v40z"/>
+</svg>
+<div class="rayo" id="rayo"></div>
+<div id="fantasma" aria-hidden="true">🔥</div>
+
+<header id="inicio">
+  <h1>Leyendas Argentinas</h1>
+  <p>Mitos y seres del monte, el campo y la noche. Leelos si te animás.</p>
+  <div><a class="boton" href="#historias">Descubrí las leyendas</a></div>
+</header>
+
+<nav aria-label="Principal">
+  <a href="#historias">Leyendas</a>
+  <a href="#curiosidades">Curiosidades</a>
+  <a href="#juego">Juego</a>
+  <a href="#contacto">Contacto</a>
+  <a href="#" id="btn-sonido">🔇 Sonido</a>
+</nav>
+
+<main>
+<section id="historias">
+  <h2>Leyendas y mitos</h2>
+  <div class="rejilla">
+    <details><summary>El Pombero</summary>
+      <img src="imagenes/pombero.svg" alt="El Pombero: silueta con sombrero de paja y ojos brillantes entre los árboles de noche" loading="lazy">
+      <p>Duende del Litoral y Paraguay, bajito, peludo y de sombrero de paja. Protege el monte y a los animales, y se lo reconoce por su silbido en las noches de siesta. Para no enojarlo se le deja tabaco, caña y miel.</p></details>
+    <details><summary>Yasy Yateré</summary>
+      <img src="imagenes/yasy-yatere.svg" alt="Yasy Yateré: pequeño duende rubio con sombrero y bastón brillante en el monte" loading="lazy">
+      <p>Pequeño ser rubio, con sombrero y bastón, que anda en las horas de siesta. Cuentan que atrae a los chicos que no duermen y los deja perdidos en el monte.</p></details>
+    <details><summary>El Kurupí</summary>
+      <img src="imagenes/kurupi.svg" alt="El Kurupí: ojos entre los troncos del monte y huellas con los pies al revés" loading="lazy">
+      <p>Espíritu del monte guaraní, protector de árboles y animales. Se dice que tiene los pies al revés para despistar a quien siga sus huellas.</p></details>
+    <details><summary>El Lobizón</summary>
+      <img src="imagenes/lobizon.svg" alt="El Lobizón: lobo aullando a la luna llena" loading="lazy">
+      <p>Séptimo hijo varón seguido de una familia: según la creencia, las noches de luna llena se transforma en una criatura mitad hombre, mitad lobo o perro.</p></details>
+    <details><summary>La Luz Mala</summary>
+      <img src="imagenes/luz-mala.svg" alt="La Luz Mala: una luz fantasmal flotando sobre el campo de noche" loading="lazy">
+      <p>Una luz fantasmal que flota sobre el campo en la noche. Algunos dicen que señala un tesoro enterrado y otros, un alma que pide oraciones.</p></details>
+    <details><summary>El Familiar</summary>
+      <img src="imagenes/familiar.svg" alt="El Familiar: enorme perro negro de ojos rojos entre los cañaverales" loading="lazy">
+      <p>Perro negro y enorme del noroeste, que según el mito nace del pacto de un patrón de ingenio con el diablo. Pide un peón por año.</p></details>
+    <details><summary>La Telesita</summary>
+      <img src="imagenes/telesita.svg" alt="La Telesita: silueta de una mujer bailando junto al fuego en el monte" loading="lazy">
+      <p>Joven santiagueña que amaba bailar chacarera. Cuentan que su espíritu aún baila en el monte, y se la recuerda con altares de muñecas y cintas.</p></details>
+    <details><summary>La Llorona</summary>
+      <img src="imagenes/llorona.svg" alt="La Llorona: figura de blanco junto al río bajo la luna" loading="lazy">
+      <p>Mujer de blanco que recorre ríos y calles de noche buscando a sus hijos. Quien oye su lamento debe alejarse sin mirar atrás.</p></details>
+  </div>
+</section>
+
+<section id="curiosidades">
+  <h2>Curiosidades</h2>
+  <div id="caja-dato">Tocá el botón para escuchar un dato.</div>
+  <button class="boton" id="btn-dato">Contame algo</button>
+</section>
+
+<section id="juego">
+  <h2>Ofrendas para el Pombero</h2>
+  <p>Hay 4 ofrendas de miel escondidas entre 16 casillas. Cuidado con el lobizón y la luz mala.</p>
+  <div id="marcador">Ofrendas: <b id="puntos">0</b> / 4 · Intentos: <b id="intentos">0</b></div>
+  <div id="tablero"></div>
+  <p style="margin-top:1rem"><button class="boton" id="btn-reiniciar">Reiniciar</button></p>
+</section>
+
+<section id="contacto">
+  <h2>Dejá tu leyenda</h2>
+  <form id="formulario">
+    <input id="nombre" placeholder="Tu nombre" required>
+    <textarea id="mensaje" rows="3" placeholder="Contanos una leyenda de tu zona" required></textarea>
+    <button class="boton" type="submit">Enviar al monte</button>
+    <p id="respuesta" aria-live="polite"></p>
+  </form>
+</section>
+</main>
+
+<footer>Proyecto grupal · Laboratorio de Aplicaciones II · Escuela Técnica “Carmen Molina de Llano”</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

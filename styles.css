@@ -1,0 +1,83 @@
+/* ===== 1. VARIABLES: colores y fuentes en un solo lugar, fácil de modificar ===== */
+:root{
+  --noche:#0a1510; --morado:#1c3a2c; --naranja:#ff7a18; --luna:#f6e7b4; --niebla:#bfd6c4;
+  --titulo:'Creepster','Chiller',fantasy; --texto:'Special Elite','Courier New',monospace;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--texto); color:var(--niebla); line-height:1.6;
+  background:linear-gradient(#050c08,var(--noche) 40%,#12261b);
+  /* Cursor personalizado: un lobo (emoji) dentro de un SVG, codificado para que lo acepten todos los navegadores */
+  cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext y='26' font-size='26'%3E%F0%9F%90%BA%3C/text%3E%3C/svg%3E") 16 16, auto;
+}
+a,button{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext y='26' font-size='26'%3E%F0%9F%95%AF%EF%B8%8F%3C/text%3E%3C/svg%3E") 16 16, pointer}
+
+/* ===== 2. FONDO DINÁMICO: luna, murciélagos y niebla (canvas + CSS) ===== */
+#cielo{position:fixed;inset:0;z-index:-2;width:100%;height:100%}
+.luna{position:fixed;top:8vh;right:10vw;width:min(22vw,180px);aspect-ratio:1;border-radius:50%;z-index:-1;
+  background:radial-gradient(circle at 35% 35%,#fffbe6,var(--luna) 60%,#d9c27a);
+  box-shadow:0 0 80px 30px rgba(246,231,180,.35); animation:latido 6s ease-in-out infinite}
+@keyframes latido{50%{box-shadow:0 0 110px 45px rgba(246,231,180,.5)}}
+.niebla{position:fixed;left:-50%;bottom:0;width:200%;height:35vh;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse at center,rgba(191,214,196,.22),transparent 65%);
+  animation:deriva 30s linear infinite alternate}
+@keyframes deriva{to{transform:translateX(25%)}}
+.cementerio{position:fixed;bottom:0;left:0;width:100%;height:18vh;z-index:-1;pointer-events:none;fill:#05030a}
+
+/* ===== 3. ESTRUCTURA ===== */
+header{min-height:100vh;display:grid;place-content:center;text-align:center;padding:2rem}
+h1{font-family:var(--titulo);font-weight:400;font-size:clamp(2.6rem,9vw,6.5rem);color:var(--naranja);
+  letter-spacing:.05em;text-shadow:0 0 20px rgba(255,122,24,.7),0 0 60px rgba(255,122,24,.4);
+  animation:parpadeo 7s infinite}
+/* La luz "falla" como una vela: efecto visual con keyframes */
+@keyframes parpadeo{0%,18%,22%,60%,64%,100%{opacity:1}20%,62%{opacity:.35}}
+header p{font-size:1.2rem;margin:1rem 0 2rem}
+nav{position:sticky;top:0;display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;padding:1rem;
+  background:rgba(10,21,16,.88);backdrop-filter:blur(6px);z-index:5;border-bottom:1px solid var(--morado)}
+nav a{color:var(--luna);text-decoration:none;font-size:1.05rem}
+nav a:hover,nav a:focus-visible{color:var(--naranja);outline:none;text-shadow:0 0 8px var(--naranja)}
+.boton{display:inline-block;background:var(--naranja);color:#1a0b00;border:0;padding:.8rem 1.6rem;
+  font:inherit;font-weight:bold;border-radius:999px;text-decoration:none;transition:transform .2s,box-shadow .2s}
+.boton:hover{transform:scale(1.07);box-shadow:0 0 25px var(--naranja)}
+section{max-width:1000px;margin:0 auto;padding:5rem 1.5rem}
+h2{font-family:var(--titulo);font-weight:400;font-size:clamp(2.2rem,6vw,3.6rem);color:var(--luna);margin-bottom:1.5rem}
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem}
+
+/* ===== 4. HISTORIAS: tarjetas que se "revelan" al hacer clic ===== */
+details{background:rgba(28,58,44,.6);border:1px solid #3f7a5a;border-radius:10px;padding:1rem 1.2rem}
+summary{font-family:var(--titulo);font-size:1.5rem;color:var(--naranja);list-style:none}
+summary::-webkit-details-marker{display:none}
+details[open]{box-shadow:0 0 25px rgba(255,122,24,.3)}
+details p{margin-top:.8rem}
+details img{display:block;width:100%;height:auto;border-radius:8px;margin-top:.8rem;border:1px solid #3f7a5a}
+
+/* ===== 5. CURIOSIDADES: dato aleatorio ===== */
+#caja-dato{min-height:8rem;display:grid;place-items:center;text-align:center;padding:1.5rem;margin-bottom:1.2rem;
+  border:2px dashed var(--naranja);border-radius:12px;font-size:1.15rem;color:var(--luna)}
+
+/* ===== 6. JUEGO: ofrendas escondidas ===== */
+#tablero{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;max-width:420px}
+.casilla{aspect-ratio:1;font-size:2.2rem;background:var(--morado);border:1px solid #3f7a5a;border-radius:10px;color:#fff}
+.casilla:hover{background:#2a5a41}
+#marcador{margin:1rem 0}
+
+/* ===== 7. FANTASMA que sigue al ratón ===== */
+#fantasma{position:fixed;font-size:2.4rem;pointer-events:none;z-index:20;opacity:.75;transition:transform .15s}
+.rayo{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:30}
+.rayo.on{animation:flash .5s}
+@keyframes flash{0%{opacity:.8}100%{opacity:0}}
+
+form{display:grid;gap:.8rem;max-width:460px}
+input,textarea{padding:.7rem;border-radius:8px;border:1px solid #3f7a5a;background:#12261b;color:var(--luna);font:inherit}
+input:focus,textarea:focus{outline:2px solid var(--naranja)}
+footer{text-align:center;padding:2rem 1rem 22vh;font-size:.9rem}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== 8. DISPOSITIVOS TÁCTILES (celulares y tablets): sin cursores personalizados ni luz que sigue al mouse ===== */
+@media (hover:none), (pointer:coarse){
+  body, a, button{cursor:auto}
+  #fantasma{display:none}
+  .luna{width:90px}
+}
